@@ -21,6 +21,17 @@ module.exports = {
             },
             onUpdate: 'CASCADE',
             onDelete: 'CASCADE',
+          }, { transaction: t }),
+
+          queryInterface.addColumn('Monitoreos', 'UserId', {
+            allowNull: false,
+            type: Sequelize.INTEGER,
+            references: {
+              model: 'Users',
+              key: 'id',
+            },
+            onUpdate: 'CASCADE',
+            onDelete: 'CASCADE',
           }, { transaction: t })
         ]
       );
@@ -38,6 +49,8 @@ module.exports = {
       return Promise.all(
         [
           queryInterface.removeColumn('Monitoreos', 'CommunityId', { transaction: t }),
+          queryInterface.removeColumn('Monitoreos', 'UserId', { transaction: t }),
+
         ]
       );
     });

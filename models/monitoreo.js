@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       Monitoreo.hasMany(models.Partos)
       Monitoreo.hasMany(models.Vacunacion)
       Monitoreo.belongsTo(models.Community)
+      Monitoreo.belongsTo(models.User)
     }
   }
   Monitoreo.init({

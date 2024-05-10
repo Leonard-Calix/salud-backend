@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { findAll, save, findAllByMonitoreo } = require('../controllers/ninos.controller');
+const { findAll, save, findAllByMonitoreo } = require('../controllers/embarazoCaptado.controller');
 const { validarJWT } = require('../middlewares/valida-jwt');
 const { validarCampos } = require('../middlewares/validar-campos');
 const { check } = require('express-validator');
@@ -11,8 +11,9 @@ router.get('/', findAll);
 router.get('/monitoreo/:monitoreoId', findAllByMonitoreo);
 
 router.post('/', [
-    check('MonitoreoId', 'El monitoreo es obligatorio').not().isEmpty(),
-    check('lactancia', 'La lactancias es obligatorio').not().isEmpty(),
+    check('antes', 'El valor de antes  es obligatorio').not().isEmpty(),
+    check('despues', 'El valor de despues es obligatorio').not().isEmpty(),
+    check('semanas', 'El valor de semanas es obligatorio').not().isEmpty(),
     check('MonitoreoId', 'El monitoreo es obligatorio').not().isEmpty(),
     check('MonitoreoId').custom(existMonitoreoById),
     //validarJWT,

@@ -14,11 +14,13 @@ app.use('/api/municipalities', require('./routes/municipality'))
 app.use('/api/auth', require('./routes/auth'))
 app.use('/api/monitoreo', require('./routes/monitoreo'))
 app.use('/api/ninos', require('./routes/ninos'))
-
-
-
-
-
+app.use('/api/cuidador-primarios', require('./routes/cuidadorPrimarios'))
+app.use('/api/detalle-nino', require('./routes/detalleNino'))
+app.use('/api/embarazo-captado', require('./routes/embarazoCaptados'))
+app.use('/api/inscrito-rnp', require('./routes/inscritoRnps'))
+app.use('/api/familias-atendidas', require('./routes/numeroFamAtendidas'))
+app.use('/api/partos', require('./routes/partos'))
+app.use('/api/vacunacion', require('./routes/vacunacion'))
 
 
 app.listen(process.env.PORT, () => {
