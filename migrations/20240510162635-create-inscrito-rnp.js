@@ -2,24 +2,18 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Questions', {
+    await queryInterface.createTable('InscritoRnps', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      description: {
-        type: Sequelize.STRING
+      inscritos: {
+        type: Sequelize.INTEGER
       },
-      type: {
-        type: Sequelize.STRING
-      },
-      state: {
-        type: Sequelize.BOOLEAN
-      },
-      recommendation: {
-        type: Sequelize.BOOLEAN
+      Noinscritos: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -32,6 +26,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Questions');
+    await queryInterface.dropTable('InscritoRnps');
   }
 };

@@ -2,19 +2,21 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Polls', {
+    await queryInterface.createTable('EmbarazoCaptados', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      description: {
-        allowNull: true,
-        type: Sequelize.STRING
+      antes: {
+        type: Sequelize.INTEGER
       },
-      response: {
-        type: Sequelize.BOOLEAN
+      despues: {
+        type: Sequelize.INTEGER
+      },
+      semanas: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -27,6 +29,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Polls');
+    await queryInterface.dropTable('EmbarazoCaptados');
   }
 };

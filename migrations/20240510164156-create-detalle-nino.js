@@ -2,18 +2,27 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Surveys', {
+    await queryInterface.createTable('DetalleNinos', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      recomendation: {
-        type: Sequelize.STRING
+      rango1: {
+        type: Sequelize.INTEGER
       },
-      monitoringDate: {
-        type: Sequelize.DATE
+      rango2: {
+        type: Sequelize.INTEGER
+      },
+      rango3: {
+        type: Sequelize.INTEGER
+      },
+      femenino: {
+        type: Sequelize.INTEGER
+      },
+      masculino: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -26,6 +35,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Surveys');
+    await queryInterface.dropTable('DetalleNinos');
   }
 };

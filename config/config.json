@@ -2,7 +2,7 @@
   "development": {
     "username": "sa",
     "password": "SqlServer_2024",
-    "database": "SALUDBD",
+    "database": "SALUDDB",
     "port" : 1440,
     "host": "localhost",
     "dialect": "mssql"

@@ -2,7 +2,7 @@
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  async up (queryInterface, Sequelize) {
     /**
      * Add altering commands here.
      *
@@ -12,20 +12,22 @@ module.exports = {
     return queryInterface.sequelize.transaction(t => {
       return Promise.all(
         [
-          queryInterface.addColumn('Polls', 'surveyId', {
+          queryInterface.addColumn('InscritoRnps', 'monitoreoId', {
             allowNull: false,
-            type: Sequelize.DataTypes.INTEGER,
+            type: Sequelize.INTEGER,
             references: {
-              model: 'surveys',
+              model: 'Monitoreos',
               key: 'id',
-            }
+            },
+            onUpdate: 'CASCADE',
+            onDelete: 'CASCADE',
           }, { transaction: t })
         ]
       );
     });
   },
 
-  async down(queryInterface, Sequelize) {
+  async down (queryInterface, Sequelize) {
     /**
      * Add reverting commands here.
      *
@@ -35,7 +37,7 @@ module.exports = {
     return queryInterface.sequelize.transaction(t => {
       return Promise.all(
         [
-          queryInterface.removeColumn('Polls', 'surveyId', { transaction: t }),
+          queryInterface.removeColumn('InscritoRnps', 'monitoreoId', { transaction: t }),
         ]
       );
     });

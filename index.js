@@ -11,11 +11,12 @@ app.use(cors())
 app.use('/api/users', require('./routes/users'))
 app.use('/api/departments', require('./routes/departments'))
 app.use('/api/municipalities', require('./routes/municipality'))
-app.use('/api/polls', require('./routes/poll'))
 app.use('/api/auth', require('./routes/auth'))
-app.use('/api/questions', require('./routes/questions'))
-app.use('/api/communities', require('./routes/communities'))
-app.use('/api/surveys', require('./routes/serveys'))
+app.use('/api/monitoreo', require('./routes/monitoreo'))
+app.use('/api/ninos', require('./routes/ninos'))
+
+
+
 
 
 
