@@ -46,7 +46,7 @@ const save = async (req = request, res = response) => {
 
         const newNino = await Ninos.create({
             lactancia: req.body.lactancia,
-            monitoreoId: req.body.monitoreoId,
+            MonitoreoId: req.body.MonitoreoId,
             createdAt: new Date(),
             updatedAt: new Date()
         });

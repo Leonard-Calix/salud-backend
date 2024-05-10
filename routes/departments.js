@@ -9,7 +9,7 @@ const router = Router();
 router.get('/', [validarJWT], findAll);
 
 router.post('/', [
-    //check('department', 'El nombre es obligatorio').isEmpty(),
+    //check('department', 'El nombre es obligatorio').not().isEmpty(),
     validarJWT,
     validarCampos
 ], create);

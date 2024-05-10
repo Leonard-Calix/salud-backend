@@ -3,6 +3,7 @@ const { findAll, save, findAllByComnunity } = require('../controllers/momitoreo.
 const { validarJWT } = require('../middlewares/valida-jwt');
 const { validarCampos } = require('../middlewares/validar-campos');
 const { check } = require('express-validator');
+const { existCommunityById } = require('../helpers/db-validators');
 const router = Router();
 
 router.get('/', findAll);
@@ -10,8 +11,9 @@ router.get('/', findAll);
 router.get('/:communityId', findAllByComnunity);
 
 router.post('/', [
-    check('comunidadId', 'La cominudad es obligatorio').isEmpty(),
-    check('famPriorizadas', 'La cominudad es obligatorio').isEmpty(),
+    check('CommunityId', 'La cominudad es obligatorio').not().isEmpty(),
+    check('famPriorizadas', 'La cantidad de familias es obligatorio').not().isEmpty(),
+    check('CommunityId').custom(existCommunityById),
     //validarJWT,
     validarCampos
 ], save);

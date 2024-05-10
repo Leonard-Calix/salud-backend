@@ -1,11 +1,4 @@
-const { User } = require("../models/");
-
-const esRoleValido = async (rol = '') => {
-    const existRol = await Role.findOne({ where: { rol } });
-    if (!existRol) {
-        throw new Error('El rol no esta registrado en la BD');
-    }
-}
+const { User, Monitoreo, Community } = require("../models/");
 
 const existEmail = async (email = '') => {
 
@@ -17,19 +10,24 @@ const existEmail = async (email = '') => {
     } catch (error) {
         console.log(error)
     }
-
-
 }
 
-const existUserById = async (id = '') => {
-    const existRol = await User.findById(id);
-    if (!existRol) {
+const existMonitoreoById = async (id = '') => {
+    const bandera = await Monitoreo.findByPk(id);
+    if (!bandera) {
+        throw new Error('El id no esta registrado');
+    }
+}
+
+const existCommunityById = async (id = '') => {
+    const bandera = await Community.findByPk(id);
+    if (!bandera) {
         throw new Error('El id no esta registrado');
     }
 }
 
 module.exports = {
-    //esRoleValido,
     existEmail,
-    //existUserById
+    existCommunityById,
+    existMonitoreoById
 }
