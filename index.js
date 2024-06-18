@@ -11,6 +11,7 @@ app.use(cors())
 app.use('/api/users', require('./routes/users'))
 app.use('/api/departments', require('./routes/departments'))
 app.use('/api/municipalities', require('./routes/municipality'))
+app.use('/api/communities', require('./routes/communities'))
 app.use('/api/auth', require('./routes/auth'))
 app.use('/api/monitoreo', require('./routes/monitoreo'))
 app.use('/api/ninos', require('./routes/ninos'))
@@ -21,6 +22,8 @@ app.use('/api/inscrito-rnp', require('./routes/inscritoRnps'))
 app.use('/api/familias-atendidas', require('./routes/numeroFamAtendidas'))
 app.use('/api/partos', require('./routes/partos'))
 app.use('/api/vacunacion', require('./routes/vacunacion'))
+app.use('/api/monitoreo-completo', require('./routes/monitoreoStack'))
+
 
 
 app.listen(process.env.PORT, () => {

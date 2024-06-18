@@ -2,17 +2,23 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Ninos', {
+    await queryInterface.createTable('ninoEvaluados', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      conLactancia: {
+      normal: {
         type: Sequelize.INTEGER
       },
-      sinLactancia: {
+      moderada: {
+        type: Sequelize.INTEGER
+      },
+      severo: {
+        type: Sequelize.INTEGER
+      },
+      otro: {
         type: Sequelize.INTEGER
       },
       createdAt: {
@@ -26,6 +32,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Ninos');
+    await queryInterface.dropTable('ninoEvaluados');
   }
 };

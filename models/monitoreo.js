@@ -18,9 +18,21 @@ module.exports = (sequelize, DataTypes) => {
       Monitoreo.hasMany(models.Ninos)
       Monitoreo.hasMany(models.NumeroFamAtendidas)
       Monitoreo.hasMany(models.Partos)
+      Monitoreo.hasMany(models.GrupoEtnico)
+      Monitoreo.hasMany(models.NinoEvaluados)
+      Monitoreo.hasMany(models.NinoDesnutricion)
+      Monitoreo.hasMany(models.Capacitacion)
+      Monitoreo.hasMany(models.NumeroIntervenciones)
+      Monitoreo.hasMany(models.Seguimiento)
+      Monitoreo.hasMany(models.GuiasDesarrollada)
+
+
+
+
       Monitoreo.hasMany(models.Vacunacion)
       Monitoreo.belongsTo(models.Community)
       Monitoreo.belongsTo(models.User)
+
     }
   }
   Monitoreo.init({

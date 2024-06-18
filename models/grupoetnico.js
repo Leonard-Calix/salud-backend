@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Ninos extends Model {
+  class GrupoEtnico extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,15 +11,20 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Ninos.belongsTo(models.Monitoreo)
+      GrupoEtnico.belongsTo(models.Monitoreo)
     }
   }
-  Ninos.init({
-    conLactancia: DataTypes.INTEGER,
-    sinLactancia: DataTypes.INTEGER
+  GrupoEtnico.init({
+    lencas: DataTypes.INTEGER,
+    tolupan: DataTypes.INTEGER,
+    chortis: DataTypes.INTEGER,
+    mestizo: DataTypes.INTEGER,
+    tawaka: DataTypes.INTEGER,
+    garifuna: DataTypes.INTEGER,
+    otros: DataTypes.INTEGER
   }, {
     sequelize,
-    modelName: 'Ninos',
+    modelName: 'GrupoEtnico',
   });
-  return Ninos;
+  return GrupoEtnico;
 };
