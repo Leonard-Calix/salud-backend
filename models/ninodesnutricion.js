@@ -15,8 +15,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   NinoDesnutricion.init({
-    noDesnutridos: DataTypes.INTEGER,
-    desnutridos: DataTypes.INTEGER
+    noDesnutridos: DataTypes.DOUBLE,
+    desnutridos: DataTypes.DOUBLE
   }, {
     sequelize,
     modelName: 'NinoDesnutricion',

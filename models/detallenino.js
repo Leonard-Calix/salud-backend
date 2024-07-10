@@ -15,9 +15,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   DetalleNino.init({
-    rango1: DataTypes.INTEGER,
-    rango2: DataTypes.INTEGER,
-    rango3: DataTypes.INTEGER,
+    rango1: DataTypes.DOUBLE,
+    rango2: DataTypes.DOUBLE,
+    rango3: DataTypes.DOUBLE,
     femenino: DataTypes.INTEGER,
     masculino: DataTypes.INTEGER
   }, {

@@ -10,10 +10,10 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       noDesnutridos: {
-        type: Sequelize.INTEGER
+        type: Sequelize.DOUBLE
       },
       desnutridos: {
-        type: Sequelize.INTEGER
+        type: Sequelize.DOUBLE
       },
       createdAt: {
         allowNull: false,

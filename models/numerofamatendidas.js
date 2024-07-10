@@ -15,8 +15,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   NumeroFamAtendidas.init({
-    ejecutadas: DataTypes.INTEGER,
-    programadas: DataTypes.INTEGER
+    ejecutadas: DataTypes.DOUBLE,
+    programadas: DataTypes.DOUBLE
   }, {
     sequelize,
     modelName: 'NumeroFamAtendidas',

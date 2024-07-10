@@ -10,13 +10,13 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       rango1: {
-        type: Sequelize.INTEGER
+        type: Sequelize.DOUBLE
       },
       rango2: {
-        type: Sequelize.INTEGER
+        type: Sequelize.DOUBLE
       },
       rango3: {
-        type: Sequelize.INTEGER
+        type: Sequelize.DOUBLE
       },
       femenino: {
         type: Sequelize.INTEGER
@@ -37,4 +37,4 @@ module.exports = {
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('DetalleNinos');
   }
-};
+};INTEGER
