@@ -25,14 +25,10 @@ module.exports = (sequelize, DataTypes) => {
       Monitoreo.hasMany(models.NumeroIntervenciones)
       Monitoreo.hasMany(models.Seguimiento)
       Monitoreo.hasMany(models.GuiasDesarrollada)
-
-
-
-
+      Monitoreo.hasMany(models.Guias)
       Monitoreo.hasMany(models.Vacunacion)
       Monitoreo.belongsTo(models.Community)
       Monitoreo.belongsTo(models.User)
-
     }
   }
   Monitoreo.init({

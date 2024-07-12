@@ -2,9 +2,8 @@ const { request, response } = require("express");
 const { Monitoreo, NumeroFamAtendidas, CuidadorPrimario,
     EmbarazoCaptado, Partos, Ninos, DetalleNino, InscritoRnp,
     Vacunacion, GrupoEtnico, NinoEvaluados, NinoDesnutricion,
-    Capacitacion, NumeroIntervenciones, Seguimiento, GuiasDesarrollada
+    Capacitacion, NumeroIntervenciones, Seguimiento, GuiasDesarrollada, Guias
 } = require("../models/");
-const { Sequelize, Transaction, where } = require('sequelize');
 const models = require('../models');
 
 
@@ -31,8 +30,7 @@ const save = async (req = request, res = response) => {
         form14,
         form15,
         form16,
-        form17,
-        form18
+        form17
     } = req.body;
 
     const newMonitoreo = await Monitoreo.create({
@@ -142,7 +140,6 @@ const save = async (req = request, res = response) => {
         MonitoreoId: newMonitoreo.id,
     }, { transaction });
 
-
     //INSERTE DEL TAP11 NinoEvaluados
     const form11Promise = NinoEvaluados.create({
         normal: form11.normal,
@@ -202,6 +199,26 @@ const save = async (req = request, res = response) => {
         MonitoreoId: newMonitoreo.id,
     }, { transaction });
 
+    //INSERTE DEL TAP17 Guias
+    const form17Promise = Guias.create({
+        guia1PEmbarazo: form17.guia1PEmbarazo,
+        guia2PNacimiento: form17.guia2PNacimiento,
+        guia3PPrimerMes: form17.guia3PPrimerMes,
+        guia4P1A3Meses: form17.guia4P1A3Meses,
+        guia5P4A6Meses: form17.guia5P4A6Meses,
+        guia6P6A8Meses: form17.guia6P6A8Meses,
+        guia7P9A12Meses: form17.guia7P9A12Meses,
+        guia8P12A17Meses: form17.guia8P12A17Meses,
+        guia9P18A23Meses: form17.guia9P18A23Meses,
+        guia10P2A3Anios: form17.guia10P2A3Anios,
+        guia11P3Anios: form17.guia11P3Anios,
+        guia12P4Anios: form17.guia12P4Anios,
+        guia13P5Anios: form17.guia13P5Anios,
+        guia14P4Anios: form17.guia14P4Anios,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        MonitoreoId: newMonitoreo.id,
+    }, { transaction });
 
     Promise.all([
         form2Promise,
@@ -218,7 +235,8 @@ const save = async (req = request, res = response) => {
         form13Promise,
         form14Promise,
         form15Promise,
-        form16Promise
+        form16Promise,
+        form17Promise
 
     ]).then(async resp => {
         await transaction.commit();

@@ -23,8 +23,7 @@ app.use('/api/familias-atendidas', require('./routes/numeroFamAtendidas'))
 app.use('/api/partos', require('./routes/partos'))
 app.use('/api/vacunacion', require('./routes/vacunacion'))
 app.use('/api/monitoreo-completo', require('./routes/monitoreoStack'))
-
-
+app.use('/api/graficos', require('./routes/graficos'))
 
 app.listen(process.env.PORT, () => {
   console.log('Servidor corriendo en puerto ', process.env.PORT)
