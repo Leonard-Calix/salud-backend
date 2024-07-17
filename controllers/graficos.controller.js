@@ -17,8 +17,6 @@ const porcentajeFamilasAtendidas = async (req = request, res = response) => {
             `and CAST(createdAt as date) < CAST('${req.body.fechaFinal}' as date) ` +
             `and YEAR(CAST(createdAt as date) ) = ${req.body.anio} `;
 
-        console.log(query)
-
         const numeroFamAtendidas = await sequelize.query(query, {
             type: QueryTypes.SELECT,
         });
@@ -36,14 +34,13 @@ const porcentajeNiñosDesnutricion = async (req = request, res = response) => {
 
         let sequelize = await models.sequelize;
 
+        const monitoreo = await Monitoreo.findByPk(req.body.monitoreoId);
 
         const query = `SELECT noDesnutridos, desnutridos, (noDesnutridos + desnutridos) as total, (noDesnutridos/(noDesnutridos + desnutridos)) as pnoDesnutridos, (Desnutridos/(noDesnutridos + desnutridos)) pdesnutridos, createdAt from ninoDesnutricions  ` +
-            `WHERE monitoreoId = ${req.body.monitoreoId} ` +
+            `WHERE monitoreoId = ${monitoreo.CommunityId}  ` +
             `and CAST(createdAt as date) > CAST('${req.body.fechaInicial}' as date) ` +
-            `and CAST(createdAt as date) < CAST(${req.body.fechaFinal} as date) ` +
-            `and YEAR(CAST('createdAt' as date) ) = ${req.body.anio} `;
-
-        console.log(query)
+            `and CAST(createdAt as date) < CAST('${req.body.fechaFinal}' as date) ` +
+            `and YEAR(CAST(createdAt as date) ) = ${req.body.anio} `;
 
         const numeroFamAtendidas = await sequelize.query(query, {
             type: QueryTypes.SELECT,
