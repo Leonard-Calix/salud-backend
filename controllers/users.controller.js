@@ -1,6 +1,5 @@
 const { request, response } = require("express");
 const bcryptjs = require("bcryptjs");
-
 const { User } = require("../models/");
 
 const create = async (req = request, res = response) => {
@@ -61,7 +60,7 @@ const getAllUsers = async (req = request, res = response) => {
 
         const users = await User.findAll({
             attributes: {
-                exclude: ['id', 'password']
+                exclude: ['password']
             },
             where: {
                 active: 1
@@ -80,9 +79,13 @@ const deleteUSers = async (req = request, res = response) => {
 
         const { id } = req.params;
 
-        const user = await UsuarioModel.findByIdAndUpdate(id, { state: false });
+        const user = await User.findByPk(id);
 
-        res.json({ user });
+        await user.update({ active: false });
+
+        await user.save();
+
+        res.json({ ok: true, msg: 'Consulta exitosa', data: user });
 
     } catch (error) {
         res.status(500).json({ error: JSON.stringify(error) });

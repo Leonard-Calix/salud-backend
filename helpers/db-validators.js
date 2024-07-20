@@ -26,8 +26,16 @@ const existCommunityById = async (id = '') => {
     }
 }
 
+const existuseryById = async (id = '') => {
+    const bandera = await User.findByPk(id);
+    if (!bandera) {
+        throw new Error('El id no esta registrado');
+    }
+}
+
 module.exports = {
     existEmail,
     existCommunityById,
-    existMonitoreoById
+    existMonitoreoById,
+    existuseryById
 }
