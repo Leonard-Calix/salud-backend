@@ -2,10 +2,14 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const app = express()
+const path = require('path');
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(cors())
+app.use(cors());
+
+// Sirve archivos estáticos desde la carpeta "public"
+app.use(express.static(path.join(__dirname, 'public')));
 
 //app.use('/api/app', require('./routes/app'));
 app.use('/api/users', require('./routes/users'))

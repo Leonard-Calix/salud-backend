@@ -1,6 +1,7 @@
 const { request, response } = require("express");
 const bcryptjs = require("bcryptjs");
 const { User } = require("../models/");
+const { Op } = require("sequelize");
 
 const create = async (req = request, res = response) => {
     try {
@@ -63,7 +64,10 @@ const getAllUsers = async (req = request, res = response) => {
                 exclude: ['password']
             },
             where: {
-                active: 1
+                active: 1,
+                id: {
+                    [Op.ne]: req.user.id
+                }
             }
         });
 
