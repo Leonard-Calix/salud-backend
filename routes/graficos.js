@@ -1,7 +1,7 @@
 const { Router } = require('express');
-const { grafico1, porcentajeFamilasAtendidas, porcentajeNiñosDesnutricion, porcentajeNiños, porcentajeFamilasAtendidasGeneral } = require('../controllers/graficos.controller');
+const { grafico1, porcentajeFamilasAtendidas, porcentajeNiñosDesnutricion, porcentajeNiños, porcentajeFamilasAtendidasGeneral, getGraficoN1, getGraficoN2, getGraficoN3 } = require('../controllers/graficos.controller');
 const { validarCampos } = require('../middlewares/validar-campos');
-const { existMonitoreoById } = require('../helpers/db-validators');
+const { existMonitoreoById, existCommunityById } = require('../helpers/db-validators');
 const { validarJWT } = require('../middlewares/valida-jwt');
 const { check } = require('express-validator');
 const router = Router();
@@ -48,12 +48,45 @@ router.post('/porcentaje-ninos',
 router.post('/porcentaje-general-anio',
     [
         check('anio', 'El campo es obligatorio').not().isEmpty(),
+        check('communityId', 'El campo es obligatorio').not().isEmpty(),
+        check('communityId').custom(existCommunityById),
+        //validarJWT,
+        validarCampos,
+    ],
+    porcentajeFamilasAtendidasGeneral
+);
+
+router.post('/porcentaje-g1',
+    [
+        check('anio', 'El campo es obligatorio').not().isEmpty(),
         check('monitoreoId', 'El campo es obligatorio').not().isEmpty(),
         check('monitoreoId').custom(existMonitoreoById),
         validarJWT,
         validarCampos,
     ],
-    porcentajeFamilasAtendidasGeneral
+    getGraficoN1
+);
+
+router.post('/porcentaje-g2',
+    [
+        check('anio', 'El campo es obligatorio').not().isEmpty(),
+        check('monitoreoId', 'El campo es obligatorio').not().isEmpty(),
+        check('monitoreoId').custom(existMonitoreoById),
+        validarJWT,
+        validarCampos,
+    ],
+    getGraficoN2
+);
+
+router.post('/porcentaje-g3',
+    [
+        check('anio', 'El campo es obligatorio').not().isEmpty(),
+        check('monitoreoId', 'El campo es obligatorio').not().isEmpty(),
+        check('monitoreoId').custom(existMonitoreoById),
+        validarJWT,
+        validarCampos,
+    ],
+    getGraficoN3
 );
 
 module.exports = router;
