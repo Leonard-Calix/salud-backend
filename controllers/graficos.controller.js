@@ -17,7 +17,7 @@ const porcentajeFamilasAtendidas = async (req = request, res = response) => {
         }
 
         const query = `SELECT * from NumeroFamAtendidas ` +
-            `WHERE monitoreoId IN ( SELECT id from monitoreos WHERE CommunityId = ${req.body.monitoreoId} ) ` +
+            `WHERE monitoreoId IN ( SELECT id from monitoreos WHERE CommunityId = ${req.body.communityId} ) ` +
             `and CAST(createdAt as date) > CAST('${req.body.fechaInicial}' as date) ` +
             `and CAST(createdAt as date) < CAST('${req.body.fechaFinal}' as date) ` +
             `and YEAR(CAST(createdAt as date) ) = ${req.body.anio} `;
@@ -65,7 +65,7 @@ const porcentajeNiñosDesnutricion = async (req = request, res = response) => {
         }
 
         const query = `SELECT SUM(noDesnutridos) as noDesnutridos, SUM(desnutridos) as desnutridos,  (SUM(noDesnutridos) + SUM(desnutridos)) as total from ninoDesnutricions ` +
-            `WHERE monitoreoId IN ( SELECT id from monitoreos WHERE CommunityId = ${req.body.monitoreoId} ) ` +
+            `WHERE monitoreoId IN ( SELECT id from monitoreos WHERE CommunityId = ${req.body.communityId} ) ` +
             `and CAST(createdAt as date) > CAST('${req.body.fechaInicial}' as date) ` +
             `and CAST(createdAt as date) < CAST('${req.body.fechaFinal}' as date) ` +
             `and YEAR(CAST(createdAt as date) ) = ${req.body.anio} `;
@@ -111,7 +111,7 @@ const porcentajeNiños = async (req = request, res = response) => {
         }
 
         const query = `SELECT SUM(femenino)  as femenino, SUM(masculino) masculino , (SUM(femenino) + SUM(masculino)) as total from DetalleNinos ` +
-            `WHERE monitoreoId IN ( SELECT id from monitoreos WHERE CommunityId = ${req.body.monitoreoId} )  ` +
+            `WHERE monitoreoId IN ( SELECT id from monitoreos WHERE CommunityId = ${req.body.communityId} )  ` +
             `and CAST(createdAt as date) > CAST('${req.body.fechaInicial}' as date) ` +
             `and CAST(createdAt as date) < CAST('${req.body.fechaFinal}' as date) ` +
             `and YEAR(CAST(createdAt as date) ) = ${req.body.anio} `;
@@ -153,6 +153,49 @@ const porcentajeFamilasAtendidasGeneral = async (req = request, res = response) 
 
         const query = `SELECT SUM(ejecutadas) as ejecutadas, SUM(programadas) as programadas from NumeroFamAtendidas ` +
             `WHERE monitoreoId IN ( SELECT id from monitoreos WHERE CommunityId = ${req.body.communityId} ) ` +
+            `and CAST(createdAt as date) > CAST('${req.body.anio}-01-01' as date) ` +
+            `and CAST(createdAt as date) < CAST('${req.body.anio}-04-01' as date) ` +
+            `and YEAR(CAST(createdAt as date) ) = ${req.body.anio}  ` +
+            `UNION ALL ` +
+            `SELECT SUM(ejecutadas) as ejecutadas, SUM(programadas) as programadas from NumeroFamAtendidas ` +
+            `WHERE monitoreoId IN ( SELECT id from monitoreos WHERE CommunityId = ${req.body.communityId})  ` +
+            `and CAST(createdAt as date) >= CAST('${req.body.anio}-04-01' as date) ` +
+            `and CAST(createdAt as date) < CAST('${req.body.anio}-07-01' as date) ` +
+            `and YEAR(CAST(createdAt as date) ) = ${req.body.anio} ` +
+            `UNION ALL ` +
+            `SELECT SUM(ejecutadas) as ejecutadas, SUM(programadas) as programadas from NumeroFamAtendidas ` +
+            `WHERE monitoreoId IN ( SELECT id from monitoreos WHERE CommunityId = ${req.body.communityId})  ` +
+            `and CAST(createdAt as date) >= CAST('${req.body.anio}-07-01' as date)  ` +
+            `and CAST(createdAt as date) < CAST('${req.body.anio}-10-01' as date)  ` +
+            `and YEAR(CAST(createdAt as date) ) = ${req.body.anio} ` +
+            `UNION ALL ` +
+            `SELECT SUM(ejecutadas) as ejecutadas, SUM(programadas) as programadas from NumeroFamAtendidas ` +
+            `WHERE monitoreoId IN ( SELECT id from monitoreos WHERE CommunityId = ${req.body.communityId})  ` +
+            `and CAST(createdAt as date) >= CAST('${req.body.anio}-10-01' as date) ` +
+            `and CAST(createdAt as date) <= CAST('${req.body.anio}-12-31' as date) ` +
+            `and YEAR(CAST(createdAt as date) ) = ${req.body.anio} `;
+
+        const responseQuery = await sequelize.query(query, {
+            type: QueryTypes.SELECT,
+
+        });
+
+
+        res.json(getResponse(200, responseQuery));
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(getResponse(500, error));
+    }
+}
+
+const porcentajeFamilasAtendidasGeneralDesnutricion = async (req = request, res = response) => {
+    try {
+
+        let sequelize = await models.sequelize;
+
+        const query = `SELECT SUM(ejecutadas) as ejecutadas, SUM(programadas) as programadas from NumeroFamAtendidas ` +
+            `WHERE monitoreoId IN ( SELECT id from monitoreos WHERE CommunityId = ${req.body.communityId} ) ` +
             `and CAST(createdAt as date) > CAST('2024-01-01' as date) ` +
             `and CAST(createdAt as date) < CAST('2024-04-01' as date) ` +
             `and YEAR(CAST(createdAt as date) ) = ${req.body.anio}  ` +
@@ -180,7 +223,6 @@ const porcentajeFamilasAtendidasGeneral = async (req = request, res = response) 
 
         });
 
-        console.log(responseQuery)
 
         res.json(getResponse(200, responseQuery));
 
@@ -190,55 +232,41 @@ const porcentajeFamilasAtendidasGeneral = async (req = request, res = response) 
     }
 }
 
-const getGraficoN1 = async (req = request, res = response) => {
+const porcentajeFamilasAtendidasGeneralAtendidos = async (req = request, res = response) => {
     try {
 
         let sequelize = await models.sequelize;
-        let CPEjecutadas = 0;
-        let CPProgramadas = 0;
-
-        let response = {
-            PEjecutadas: 0,
-            PNoEjecutadas: 0
-        }
 
         const query = `SELECT SUM(ejecutadas) as ejecutadas, SUM(programadas) as programadas from NumeroFamAtendidas ` +
-            `WHERE monitoreoId IN ( SELECT id from monitoreos WHERE CommunityId = ${req.body.monitoreoId} ) ` +
+            `WHERE monitoreoId IN ( SELECT id from monitoreos WHERE CommunityId = ${req.body.communityId} ) ` +
+            `and CAST(createdAt as date) > CAST('2024-01-01' as date) ` +
+            `and CAST(createdAt as date) < CAST('2024-04-01' as date) ` +
+            `and YEAR(CAST(createdAt as date) ) = ${req.body.anio}  ` +
+            `UNION ALL ` +
+            `SELECT SUM(ejecutadas) as ejecutadas, SUM(programadas) as programadas from NumeroFamAtendidas ` +
+            `WHERE monitoreoId IN ( SELECT id from monitoreos WHERE CommunityId = ${req.body.communityId})  ` +
+            `and CAST(createdAt as date) >= CAST('2024-04-01' as date) ` +
+            `and CAST(createdAt as date) < CAST('2024-07-01' as date) ` +
             `and YEAR(CAST(createdAt as date) ) = ${req.body.anio} ` +
             `UNION ALL ` +
             `SELECT SUM(ejecutadas) as ejecutadas, SUM(programadas) as programadas from NumeroFamAtendidas ` +
-            `WHERE YEAR(CAST(createdAt as date) ) = ${req.body.anio} `;
+            `WHERE monitoreoId IN ( SELECT id from monitoreos WHERE CommunityId = ${req.body.communityId})  ` +
+            `and CAST(createdAt as date) >= CAST('2024-07-01' as date)  ` +
+            `and CAST(createdAt as date) < CAST('2024-10-01' as date)  ` +
+            `and YEAR(CAST(createdAt as date) ) = ${req.body.anio} ` +
+            `UNION ALL ` +
+            `SELECT SUM(ejecutadas) as ejecutadas, SUM(programadas) as programadas from NumeroFamAtendidas ` +
+            `WHERE monitoreoId IN ( SELECT id from monitoreos WHERE CommunityId = ${req.body.communityId})  ` +
+            `and CAST(createdAt as date) >= CAST('2024-10-01' as date) ` +
+            `and CAST(createdAt as date) <= CAST('2024-12-31' as date) ` +
+            `and YEAR(CAST(createdAt as date) ) = ${req.body.anio} `;
 
         const responseQuery = await sequelize.query(query, {
             type: QueryTypes.SELECT,
 
         });
 
-        if (responseQuery.length == 0) {
-
-            response.PEjecutadas = 0;
-            response.PNoEjecutadas = 0;
-
-            return res.json({ ok: false, msg: "No hay registros para esas fechas --", data: response })
-        }
-
-        console.log(responseQuery)
-
-        if (responseQuery.filter(item => item.programadas == 0).length > 0 || responseQuery.filter(item => item.ejecutadas == 0).length > 0) {
-
-            response.PEjecutadas = 0;
-            response.PNoEjecutadas = 0;
-
-            return res.json({ ok: false, msg: "No hay registros para esas fechas -", data: response })
-        }
-
-        const cominidad = responseQuery[0];
-        const totales = responseQuery[1];
-
-        response.PEjecutadas = Math.round((cominidad.ejecutadas / totales.ejecutadas) * 100);
-        response.PNoEjecutadas = Math.round(100 - ((cominidad.ejecutadas / totales.ejecutadas) * 100));
-
-        res.json(getResponse(200, response));
+        res.json(getResponse(200, responseQuery));
 
     } catch (error) {
         console.log(error)
@@ -246,124 +274,13 @@ const getGraficoN1 = async (req = request, res = response) => {
     }
 }
 
-const getGraficoN2 = async (req = request, res = response) => {
-    try {
 
-        let sequelize = await models.sequelize;
-        let CPEjecutadas = 0;
-        let CPProgramadas = 0;
-
-        let response = {
-            PEjecutadas: 0,
-            PNoEjecutadas: 0
-        }
-
-        const query = `SELECT SUM(ejecutadas) as ejecutadas, SUM(programadas) as programadas from NumeroFamAtendidas ` +
-            `WHERE monitoreoId IN ( SELECT id from monitoreos WHERE CommunityId = ${req.body.monitoreoId} ) ` +
-            `and YEAR(CAST(createdAt as date) ) = ${req.body.anio} ` +
-            `UNION ALL ` +
-            `SELECT SUM(ejecutadas) as ejecutadas, SUM(programadas) as programadas from NumeroFamAtendidas ` +
-            `WHERE YEAR(CAST(createdAt as date) ) = ${req.body.anio} `;
-
-        const responseQuery = await sequelize.query(query, {
-            type: QueryTypes.SELECT,
-
-        });
-
-        if (responseQuery.length == 0) {
-
-            response.PEjecutadas = 0;
-            response.PNoEjecutadas = 0;
-
-            return res.json({ ok: false, msg: "No hay registros para esas fechas --", data: response })
-        }
-
-        console.log(responseQuery)
-
-        if (responseQuery.filter(item => item.programadas == 0).length > 0 || responseQuery.filter(item => item.ejecutadas == 0).length > 0) {
-
-            response.PEjecutadas = 0;
-            response.PNoEjecutadas = 0;
-
-            return res.json({ ok: false, msg: "No hay registros para esas fechas -", data: response })
-        }
-
-        const cominidad = responseQuery[0];
-        const totales = responseQuery[1];
-
-        response.PEjecutadas = Math.round((cominidad.ejecutadas / totales.ejecutadas) * 100);
-        response.PNoEjecutadas = Math.round(100 - ((cominidad.ejecutadas / totales.ejecutadas) * 100));
-
-        res.json(getResponse(200, response));
-
-    } catch (error) {
-        console.log(error)
-        res.status(500).json(getResponse(500, error));
-    }
-}
-
-const getGraficoN3 = async (req = request, res = response) => {
-    try {
-
-        let sequelize = await models.sequelize;
-        let CPEjecutadas = 0;
-        let CPProgramadas = 0;
-
-        let response = {
-            PEjecutadas: 0,
-            PNoEjecutadas: 0
-        }
-
-        const query = `SELECT SUM(ejecutadas) as ejecutadas, SUM(programadas) as programadas from NumeroFamAtendidas ` +
-            `WHERE monitoreoId IN ( SELECT id from monitoreos WHERE CommunityId = ${req.body.monitoreoId} ) ` +
-            `and YEAR(CAST(createdAt as date) ) = ${req.body.anio} ` +
-            `UNION ALL ` +
-            `SELECT SUM(ejecutadas) as ejecutadas, SUM(programadas) as programadas from NumeroFamAtendidas ` +
-            `WHERE YEAR(CAST(createdAt as date) ) = ${req.body.anio} `;
-
-        const responseQuery = await sequelize.query(query, {
-            type: QueryTypes.SELECT,
-
-        });
-
-        if (responseQuery.length == 0) {
-
-            response.PEjecutadas = 0;
-            response.PNoEjecutadas = 0;
-
-            return res.json({ ok: false, msg: "No hay registros para esas fechas --", data: response })
-        }
-
-        console.log(responseQuery)
-
-        if (responseQuery.filter(item => item.programadas == 0).length > 0 || responseQuery.filter(item => item.ejecutadas == 0).length > 0) {
-
-            response.PEjecutadas = 0;
-            response.PNoEjecutadas = 0;
-
-            return res.json({ ok: false, msg: "No hay registros para esas fechas -", data: response })
-        }
-
-        const cominidad = responseQuery[0];
-        const totales = responseQuery[1];
-
-        response.PEjecutadas = Math.round((cominidad.ejecutadas / totales.ejecutadas) * 100);
-        response.PNoEjecutadas = Math.round(100 - ((cominidad.ejecutadas / totales.ejecutadas) * 100));
-
-        res.json(getResponse(200, response));
-
-    } catch (error) {
-        console.log(error)
-        res.status(500).json(getResponse(500, error));
-    }
-}
 
 module.exports = {
     porcentajeFamilasAtendidas,
     porcentajeNiñosDesnutricion,
     porcentajeNiños,
     porcentajeFamilasAtendidasGeneral,
-    getGraficoN1,
-    getGraficoN2,
-    getGraficoN3
+    porcentajeFamilasAtendidasGeneralDesnutricion,
+    porcentajeFamilasAtendidasGeneralAtendidos
 }
