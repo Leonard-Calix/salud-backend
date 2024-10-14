@@ -194,35 +194,34 @@ const porcentajeFamilasAtendidasGeneralDesnutricion = async (req = request, res 
 
         let sequelize = await models.sequelize;
 
-        const query = `SELECT SUM(ejecutadas) as ejecutadas, SUM(programadas) as programadas from NumeroFamAtendidas ` +
-            `WHERE monitoreoId IN ( SELECT id from monitoreos WHERE CommunityId = ${req.body.communityId} ) ` +
-            `and CAST(createdAt as date) > CAST('2024-01-01' as date) ` +
-            `and CAST(createdAt as date) < CAST('2024-04-01' as date) ` +
-            `and YEAR(CAST(createdAt as date) ) = ${req.body.anio}  ` +
-            `UNION ALL ` +
-            `SELECT SUM(ejecutadas) as ejecutadas, SUM(programadas) as programadas from NumeroFamAtendidas ` +
-            `WHERE monitoreoId IN ( SELECT id from monitoreos WHERE CommunityId = ${req.body.communityId})  ` +
-            `and CAST(createdAt as date) >= CAST('2024-04-01' as date) ` +
-            `and CAST(createdAt as date) < CAST('2024-07-01' as date) ` +
-            `and YEAR(CAST(createdAt as date) ) = ${req.body.anio} ` +
-            `UNION ALL ` +
-            `SELECT SUM(ejecutadas) as ejecutadas, SUM(programadas) as programadas from NumeroFamAtendidas ` +
-            `WHERE monitoreoId IN ( SELECT id from monitoreos WHERE CommunityId = ${req.body.communityId})  ` +
-            `and CAST(createdAt as date) >= CAST('2024-07-01' as date)  ` +
-            `and CAST(createdAt as date) < CAST('2024-10-01' as date)  ` +
-            `and YEAR(CAST(createdAt as date) ) = ${req.body.anio} ` +
-            `UNION ALL ` +
-            `SELECT SUM(ejecutadas) as ejecutadas, SUM(programadas) as programadas from NumeroFamAtendidas ` +
-            `WHERE monitoreoId IN ( SELECT id from monitoreos WHERE CommunityId = ${req.body.communityId})  ` +
-            `and CAST(createdAt as date) >= CAST('2024-10-01' as date) ` +
-            `and CAST(createdAt as date) <= CAST('2024-12-31' as date) ` +
-            `and YEAR(CAST(createdAt as date) ) = ${req.body.anio} `;
+        const query = `SELECT SUM(desnutridos) as tratamiento, SUM(noDesnutridos) as sinTratamiento from ninoDesnutricions ` +
+              `WHERE monitoreoId IN ( SELECT id FROM monitoreos WHERE CommunityId = ${req.body.communityId} ) ` +
+              `AND CAST(createdAt as date) > CAST('${req.body.anio}-01-01' as date) ` +
+              `AND CAST(createdAt as date) < CAST('${req.body.anio}-04-01' as date) ` +
+              `AND YEAR(CAST(createdAt as date) ) = ${req.body.anio} ` +
+              `UNION ALL ` +
+              `SELECT SUM(desnutridos) as tratamiento, SUM(noDesnutridos) as sinTratamiento from ninoDesnutricions ` +
+              `WHERE monitoreoId IN ( SELECT id FROM monitoreos WHERE CommunityId = ${req.body.communityId} ) ` +
+              `AND CAST(createdAt as date) > CAST('${req.body.anio}-04-01' as date) ` +
+              `AND CAST(createdAt as date) < CAST('${req.body.anio}-06-01' as date) ` +
+              `AND YEAR(CAST(createdAt as date) ) = ${req.body.anio} ` +
+              `UNION ALL ` +
+              `SELECT SUM(desnutridos) as tratamiento, SUM(noDesnutridos) as sinTratamiento from ninoDesnutricions ` +
+              `WHERE monitoreoId IN ( SELECT id FROM monitoreos WHERE CommunityId = ${req.body.communityId} ) ` +
+              `AND CAST(createdAt as date) > CAST('${req.body.anio}-06-01' as date) ` +
+              `AND CAST(createdAt as date) < CAST('${req.body.anio}-09-01' as date) ` +
+              `AND YEAR(CAST(createdAt as date) ) = ${req.body.anio} ` +
+              `UNION ALL ` +
+              `SELECT SUM(desnutridos) as tratamiento, SUM(noDesnutridos) as sinTratamiento from ninoDesnutricions ` +
+              `WHERE monitoreoId IN ( SELECT id FROM monitoreos WHERE CommunityId = ${req.body.communityId} ) ` +
+              `AND CAST(createdAt as date) > CAST('${req.body.anio}-09-01' as date) ` +
+              `AND CAST(createdAt as date) < CAST('${req.body.anio}-12-01' as date) ` +
+              `AND YEAR(CAST(createdAt as date) ) = ${req.body.anio} `;
 
         const responseQuery = await sequelize.query(query, {
             type: QueryTypes.SELECT,
 
         });
-
 
         res.json(getResponse(200, responseQuery));
 
@@ -237,29 +236,29 @@ const porcentajeFamilasAtendidasGeneralAtendidos = async (req = request, res = r
 
         let sequelize = await models.sequelize;
 
-        const query = `SELECT SUM(ejecutadas) as ejecutadas, SUM(programadas) as programadas from NumeroFamAtendidas ` +
-            `WHERE monitoreoId IN ( SELECT id from monitoreos WHERE CommunityId = ${req.body.communityId} ) ` +
-            `and CAST(createdAt as date) > CAST('2024-01-01' as date) ` +
-            `and CAST(createdAt as date) < CAST('2024-04-01' as date) ` +
-            `and YEAR(CAST(createdAt as date) ) = ${req.body.anio}  ` +
-            `UNION ALL ` +
-            `SELECT SUM(ejecutadas) as ejecutadas, SUM(programadas) as programadas from NumeroFamAtendidas ` +
-            `WHERE monitoreoId IN ( SELECT id from monitoreos WHERE CommunityId = ${req.body.communityId})  ` +
-            `and CAST(createdAt as date) >= CAST('2024-04-01' as date) ` +
-            `and CAST(createdAt as date) < CAST('2024-07-01' as date) ` +
-            `and YEAR(CAST(createdAt as date) ) = ${req.body.anio} ` +
-            `UNION ALL ` +
-            `SELECT SUM(ejecutadas) as ejecutadas, SUM(programadas) as programadas from NumeroFamAtendidas ` +
-            `WHERE monitoreoId IN ( SELECT id from monitoreos WHERE CommunityId = ${req.body.communityId})  ` +
-            `and CAST(createdAt as date) >= CAST('2024-07-01' as date)  ` +
-            `and CAST(createdAt as date) < CAST('2024-10-01' as date)  ` +
-            `and YEAR(CAST(createdAt as date) ) = ${req.body.anio} ` +
-            `UNION ALL ` +
-            `SELECT SUM(ejecutadas) as ejecutadas, SUM(programadas) as programadas from NumeroFamAtendidas ` +
-            `WHERE monitoreoId IN ( SELECT id from monitoreos WHERE CommunityId = ${req.body.communityId})  ` +
-            `and CAST(createdAt as date) >= CAST('2024-10-01' as date) ` +
-            `and CAST(createdAt as date) <= CAST('2024-12-31' as date) ` +
-            `and YEAR(CAST(createdAt as date) ) = ${req.body.anio} `;
+        const query =  `SELECT SUM(rango1 + rango2 + rango3) as atendidos, ( SUM(femenino) + SUM(masculino) ) as total from DetalleNinos ` +
+                        `WHERE monitoreoId IN ( SELECT id from monitoreos WHERE CommunityId = ${req.body.communityId} ) ` +
+                        `and CAST(createdAt as date) > CAST('${req.body.anio}-01-01' as date) ` +
+                        `and CAST(createdAt as date) < CAST('${req.body.anio}-04-01' as date) ` +
+                        `and YEAR(CAST(createdAt as date) ) = ${req.body.anio}  ` +
+                        `UNION ALL ` +
+                        `SELECT SUM(rango1 + rango2 + rango3) as atendidos, ( SUM(femenino) + SUM(masculino) ) as total from DetalleNinos ` +
+                        `WHERE monitoreoId IN ( SELECT id from monitoreos WHERE CommunityId = ${req.body.communityId})  ` +
+                        `and CAST(createdAt as date) >= CAST('${req.body.anio}-04-01' as date) ` +
+                        `and CAST(createdAt as date) < CAST('${req.body.anio}-07-01' as date) ` +
+                        `and YEAR(CAST(createdAt as date) ) = ${req.body.anio} ` +
+                        `UNION ALL ` +
+                        `SELECT SUM(rango1 + rango2 + rango3) as atendidos, ( SUM(femenino) + SUM(masculino) ) as total from DetalleNinos ` +
+                        `WHERE monitoreoId IN ( SELECT id from monitoreos WHERE CommunityId = ${req.body.communityId})  ` +
+                        `and CAST(createdAt as date) >= CAST('${req.body.anio}-07-01' as date)  ` +
+                        `and CAST(createdAt as date) < CAST('${req.body.anio}-10-01' as date)  ` +
+                        `and YEAR(CAST(createdAt as date) ) = ${req.body.anio} ` +
+                        `UNION ALL ` +
+                        `SELECT SUM(rango1 + rango2 + rango3) as atendidos, ( SUM(femenino) + SUM(masculino) ) as total from DetalleNinos ` +
+                        `WHERE monitoreoId IN ( SELECT id from monitoreos WHERE CommunityId = ${req.body.communityId})  ` +
+                        `and CAST(createdAt as date) >= CAST('${req.body.anio}-10-01' as date) ` +
+                        `and CAST(createdAt as date) <= CAST('${req.body.anio}-12-31' as date) ` +
+                        `and YEAR(CAST(createdAt as date) ) = ${req.body.anio} `;
 
         const responseQuery = await sequelize.query(query, {
             type: QueryTypes.SELECT,
