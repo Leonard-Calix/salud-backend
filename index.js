@@ -11,6 +11,8 @@ app.use(cors());
 // Sirve archivos estáticos desde la carpeta "public"
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.set('puerto', process.env.PORT || 3000);
+
 //app.use('/api/app', require('./routes/app'));
 app.use('/api/users', require('./routes/users'))
 app.use('/api/departments', require('./routes/departments'))
@@ -30,5 +32,5 @@ app.use('/api/monitoreo-completo', require('./routes/monitoreoStack'))
 app.use('/api/graficos', require('./routes/graficos'))
 
 app.listen(process.env.PORT, () => {
-  console.log('Servidor corriendo en puerto ', process.env.PORT)
+  console.log('Servidor corriendo en puerto ', app.get('puerto'))
 })

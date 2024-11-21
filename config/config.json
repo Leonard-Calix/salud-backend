@@ -1,10 +1,10 @@
 {
   "development": {
-    "username": "sa",
-    "password": "SqlServer_2024",
-    "database": "SALUDDB",
-    "port" : 1440,
-    "host": "localhost",
+    "username": "administrador",
+    "password": "redSolidaria_2024",
+    "database": "redSolidariaDB",
+    "port" : 1433,
+    "host": "unahhn.database.windows.net",
     "dialect": "mssql"
   },
   "test": {
